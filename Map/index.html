@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <title>Hotel Plot</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .marker {
+        background-image: url('mapbox-icon.png');
+        background-size: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .mapboxgl-popup {
+          max-width: 200px;
+        }
+
+        .mapboxgl-popup-content {
+          text-align: center;
+          font-family: 'Open Sans', sans-serif;
+        }
+
+
+
+      #menu {
+        position: absolute;
+        background: #efefef;
+        padding: 10px;
+        font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<div id="menu">
+  <input id="satellite-v9" type="radio" name="rtoggle" value="satellite" checked="checked">
+  <label for="satellite-v9">satellite</label>
+  <input id="light-v10" type="radio" name="rtoggle" value="light">
+  <label for="light-v10">light</label>
+  <input id="dark-v10" type="radio" name="rtoggle" value="dark">
+  <label for="dark-v10">dark</label>
+  <input id="streets-v11" type="radio" name="rtoggle" value="streets">
+  <label for="streets-v11">streets</label>
+  <input id="outdoors-v11" type="radio" name="rtoggle" value="outdoors">
+  <label for="outdoors-v11">outdoors</label>
+</div>
+
+<script>
+
+mapboxgl.accessToken = 'pk.eyJ1Ijoic29oYW1kZSIsImEiOiJja28xcmcydWQwMDJlMm9vNGZ3YWE0bmU1In0.tj0qMNUWAO_OKZ5dWSdA5A';
+
+var geojson = {
+  type: 'FeatureCollection',
+  features: [
+
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [103.858948, 1.292003]
+    },
+    properties: {
+      title: 'Pan Pacific Hotel',
+      description: 'Singapore',
+      link: 'https://www.tripadvisor.in/Hotel_Review-g294265-d302294-Reviews-Pan_Pacific_Singapore-Singapore.html#REVIEWS',
+      rating: '4.5'
+    },
+    
+  },
+
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [103.852982, 1.286256]
+    },
+    properties: {
+      title: 'The Fullerton Hotel',
+      description: 'Singapore'
+    },
+    
+  },
+
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [103.837204, 1.304213]
+    },
+    properties: {
+      title: 'Ascott Orchard Hotel',
+      description: 'Singapore'
+    },
+    
+  },
+
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [103.827011, 1.310717]
+    },
+    properties: {
+      title: 'Shangri-La Hotel',
+      description: 'Singapore'
+    },
+    
+  },
+
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [103.831207, 1.306451]
+    },
+    properties: {
+      title: 'Yotel Singapore',
+      description: 'Singapore'
+    },
+    
+  },
+
+
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [103.828697, 1.307493]
+    },
+    properties: {
+      title: 'Orchard hotel',
+      description: 'Singapore'
+    },
+    
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [103.857864, 1.283028]
+    },
+    properties: {
+      title: 'Marina Bay Sands',
+      description: 'Singapore'
+    },
+    
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [103.805244, 1.287508]
+    },
+    properties: {
+      title: 'Park Hotel Alexandra',
+      description: 'Singapore'
+    },
+    
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [103.846352, 1.285682]
+    },
+    properties: {
+      title: 'PARKROYAL COLLECTION Pickering',
+      description: 'Singapore'
+    },
+    
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [103.834717, 1.308769]
+    },
+    properties: {
+      title: 'Goodwood Park Hotel',
+      description: 'Singapore'
+    },
+    
+  },
+
+
+
+  ]
+};
+
+var map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/light-v10',
+  center: [103.8198, 1.3521],
+  zoom: 11
+});
+
+
+// add markers to map
+geojson.features.forEach(function(marker) {
+  // create a HTML element for each feature
+  var el = document.createElement('div');
+  el.className = 'marker';
+
+  // make a marker for each feature and add it to the map
+  new mapboxgl.Marker(el)
+    .setLngLat(marker.geometry.coordinates)
+    .setPopup(
+      new mapboxgl.Popup({
+        offset: 25
+      }) // add popups
+      .setHTML(
+        '<h3>' +
+        marker.properties.title +
+        '</h3><p>' +
+        marker.properties.description +
+        '</p>'
+      )
+    )
+    .addTo(map);
+});
+
+
+// add multiple styles (radio buttons)
+var layerList = document.getElementById('menu');
+var inputs = layerList.getElementsByTagName('input');
+ 
+function switchLayer(layer) {
+var layerId = layer.target.id;
+map.setStyle('mapbox://styles/mapbox/' + layerId);
+}
+ 
+for (var i = 0; i < inputs.length; i++) {
+inputs[i].onclick = switchLayer;
+}
+
+
+</script>
+
+</body>
+</html>
+

@@ -41,7 +41,7 @@
 
 
 
-      #menu {
+      #menu, #menu2 {
         position: absolute;
         background: #efefef;
         padding: 10px;
@@ -54,16 +54,29 @@
 <div id='map'></div>
 
 <div id="menu">
-  <input id="satellite-v9" type="radio" name="rtoggle" value="satellite" checked="checked">
-  <label for="satellite-v9">satellite</label>
-  <input id="light-v10" type="radio" name="rtoggle" value="light">
-  <label for="light-v10">light</label>
+  <input id="light-v10" type="radio" name="rtoggle" value="light" checked="checked">
+  <label for="light-v10">Light</label>
+  <input id="satellite-v9" type="radio" name="rtoggle" value="satellite" >
+  <label for="satellite-v9">Satellite</label>
   <input id="dark-v10" type="radio" name="rtoggle" value="dark">
-  <label for="dark-v10">dark</label>
+  <label for="dark-v10">Dark</label>
   <input id="streets-v11" type="radio" name="rtoggle" value="streets">
-  <label for="streets-v11">streets</label>
+  <label for="streets-v11">Streets</label>
   <input id="outdoors-v11" type="radio" name="rtoggle" value="outdoors">
-  <label for="outdoors-v11">outdoors</label>
+  <label for="outdoors-v11">Outdoors</label>
+</div>
+
+<br/>
+<br/>
+<br/>
+
+<div id="menu2">
+  <input id="bangkok" type="radio" name="rtoggle" value="bangkok" checked="checked">
+  <label for="bangkok">Bangkok</label>
+  <input id="singapore" type="radio" name="rtoggle" value="singapore" >
+  <label for="singapore">Singapore</label>
+  <input id="kualalumpur" type="radio" name="rtoggle" value="kualalumpur">
+  <label for="kualalumpur">Kuala Lumpur</label>
 </div>
 
 <script>
@@ -550,16 +563,38 @@ geojson.features.forEach(function(marker) {
 // add multiple styles (radio buttons)
 var layerList = document.getElementById('menu');
 var inputs = layerList.getElementsByTagName('input');
+
+var cityList = document.getElementById('menu2');
+var cities = cityList.getElementsByTagName('input');
  
 function switchLayer(layer) {
 var layerId = layer.target.id;
 map.setStyle('mapbox://styles/mapbox/' + layerId);
 }
  
-for (var i = 0; i < inputs.length; i++) {
-inputs[i].onclick = switchLayer;
+function switchCity(city) {
+var name = city.target.id;
+
+if (name == 'bangkok') {
+  map.flyTo({ center: [100.5018, 13.7563] });
+}
+if (name == 'singapore') {
+  map.flyTo({ center: [103.858948, 1.292003] });
+}
+if (name == 'kualalumpur') {
+  map.flyTo({ center: [101.6869, 3.1390] });
+}
 }
 
+for (var i = 0; i < inputs.length; i++) {
+inputs[i].onclick = switchLayer;
+//map.flyTo({ center: [100.561874, 13.812068] });
+}
+
+for (var i = 0; i < cities.length; i++) {
+cities[i].onclick = switchCity;
+//map.flyTo({ center: [100.561874, 13.812068] });
+}
 
 </script>
 
